@@ -26,30 +26,6 @@ PostgreSQL      MongoDB
 
 ---
 
-## Tech Stack
-
-- **.NET 10** — runtime
-- **YARP** — reverse proxy for ApiGateway
-- **MediatR** — CQRS pattern
-- **FluentValidation** — request validation
-- **FluentResults** — result pattern
-- **Entity Framework Core** — ORM for PostgreSQL
-- **MongoDB.Driver** — MongoDB client
-- **JWT Bearer** — authentication
-- **Docker** — containerization
-
----
-
-## Prerequisites
-
-Make sure you have installed:
-
-- [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop)
-- [Visual Studio 2022](https://visualstudio.microsoft.com/) or [JetBrains Rider](https://www.jetbrains.com/rider/)
-
----
-
 ## Project Structure
 
 ```
@@ -98,8 +74,6 @@ POSTGRES_DB=userservice_db
 MONGO_DB=content_db
 ```
 
-> ⚠️ Never commit `.env` to git — it is already in `.gitignore`
-
 #### 3. Start all services
 
 ```bash
@@ -116,11 +90,18 @@ http://localhost:5000/swagger
 
 ### Option B — Run Locally with Visual Studio
 
-#### 1. Start databases via Docker
+#### 1. Start databases
 
+**Option 1 — via Docker (recommended):**
 ```bash
 docker-compose up postgres mongo
 ```
+
+**Option 2 — install locally:**
+- [PostgreSQL 16](https://www.postgresql.org/download/) — default port `5432`
+- [MongoDB 7](https://www.mongodb.com/try/download/community) — default port `27017`
+
+> If installed locally — make sure both services are running before starting the application.
 
 #### 2. Configure User Secrets
 
@@ -327,35 +308,3 @@ Expected response: `200 OK`
 |---|---|
 | `text` | `text` (string) |
 | `media` | `url` (string), `mediaType` (`Image` / `Video` / `Audio`) |
-
----
-
-## Common Issues
-
-**Services not starting — port already in use:**
-
-```bash
-netstat -ano | findstr :5001
-netstat -ano | findstr :5002
-```
-
-**JWT validation error:**
-
-> Make sure `Jwt:Key` is **identical** in both UserService and ContentService User Secrets
-
-**Database connection error:**
-
-```bash
-# Check if containers are running
-docker ps
-```
-
-**User Secrets not loading:**
-
-```bash
-cd Services/UserService/UserService.API
-dotnet user-secrets list
-
-cd Services/ContentService/ContentService.API
-dotnet user-secrets list
-```

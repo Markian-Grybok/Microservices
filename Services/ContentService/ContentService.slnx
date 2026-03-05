@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ContentService.API/ContentService.API.csproj" />
+  <Project Path="ContentService.Application/ContentService.Application.csproj" />
+  <Project Path="ContentService.Domain/ContentService.Domain.csproj" />
+  <Project Path="ContentService.Infrastructure/ContentService.Infrastructure.csproj" />
+</Solution>

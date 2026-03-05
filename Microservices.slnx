@@ -1,0 +1,26 @@
+<Solution>
+  <Folder Name="/Gateway/">
+    <Project Path="Gateway/ApiGateway/ApiGateway.csproj" />
+  </Folder>
+  <Folder Name="/Services/" />
+  <Folder Name="/Services/ContentService/">
+    <File Path="Services/ContentService/Directory.Build.props" />
+    <File Path="Services/ContentService/Directory.Packages.props" />
+    <Project Path="Services/ContentService/ContentService.API/ContentService.API.csproj" />
+    <Project Path="Services/ContentService/ContentService.Application/ContentService.Application.csproj" />
+    <Project Path="Services/ContentService/ContentService.Domain/ContentService.Domain.csproj" />
+    <Project Path="Services/ContentService/ContentService.Infrastructure/ContentService.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Services/UserService/">
+    <File Path="Services/UserService/Directory.Build.props" />
+    <File Path="Services/UserService/Directory.Packages.props" />
+    <Project Path="Services/UserService/UserService.API/UserService.API.csproj" />
+    <Project Path="Services/UserService/UserService.Application/UserService.Application.csproj" />
+    <Project Path="Services/UserService/UserService.Domain/UserService.Domain.csproj" />
+    <Project Path="Services/UserService/UserService.Infrastructure/UserService.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Shared/">
+    <File Path="Shared/Directory.Packages.props" />
+    <Project Path="Shared/SharedKernel/SharedKernel.csproj" />
+  </Folder>
+</Solution>

@@ -23,4 +23,7 @@
     <File Path="Shared/Directory.Packages.props" />
     <Project Path="Shared/SharedKernel/SharedKernel.csproj" />
   </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
 </Solution>

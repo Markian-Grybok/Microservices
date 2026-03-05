@@ -1,0 +1,87 @@
+﻿services:
+
+  us.postgres:
+    image: postgres:17
+    container_name: us-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - us-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  cs.mongo:
+    image: mongo:7
+    container_name: cs-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - cs-mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  userservice:
+    build:
+      context: .
+      dockerfile: Services/UserService/UserService.API/Dockerfile
+    container_name: userservice
+    ports:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5001
+      - ConnectionStrings__Postgres=Host=us.postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - Jwt__Key=${JWT_KEY}
+      - Jwt__Issuer=${JWT_ISSUER}
+      - Jwt__Audience=${JWT_AUDIENCE}
+    depends_on:
+      us.postgres:
+        condition: service_healthy
+
+  contentservice:
+    build:
+      context: .
+      dockerfile: Services/ContentService/ContentService.API/Dockerfile
+    container_name: contentservice
+    ports:
+      - "5002:5002"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5002
+      - ConnectionStrings__Mongo=mongodb://cs.mongo:27017/${MONGO_DB}
+      - Jwt__Key=${JWT_KEY}
+      - Jwt__Issuer=${JWT_ISSUER}
+      - Jwt__Audience=${JWT_AUDIENCE}
+    depends_on:
+      cs.mongo:
+        condition: service_healthy
+
+  apigateway:
+    build:
+      context: .
+      dockerfile: Gateway/ApiGateway/Dockerfile
+    container_name: apigateway
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+      - ReverseProxy__Clusters__users-cluster__Destinations__destination1__Address=http://userservice:5001
+      - ReverseProxy__Clusters__content-cluster__Destinations__destination1__Address=http://contentservice:5002
+    depends_on:
+      - userservice
+      - contentservice
+
+volumes:
+  us-postgres-data:
+  cs-mongo-data:

@@ -210,11 +210,16 @@ Expected response:
 
 #### Step 3 — Authorize in Swagger
 
-Click 🔒 **Authorize** button → enter:
-
+1. In the top right corner click the dropdown **"Select a definition"**
+2. Switch from `UserService` to `ContentService`
+3. Click **Authorize** button → enter:
 ```
 Bearer eyJhbGci...
 ```
+
+> ⚠️ The token must be re-entered after switching between services in the dropdown — each definition has its own Authorize state.
+
+> ℹ️ `GET /api/Content/GetById/{id}` is **public** — no token required. Only `POST /api/Content/Create` requires authorization.
 
 ---
 

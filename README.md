@@ -260,13 +260,10 @@ POST /api/Content/Create
   "name": "My Video",
   "payload": {
     "type": "media",
-    "url": "https://example.com/video.mp4",
-    "mediaType": "Video"
+    "url": "https://example.com/video.mp4"
   }
 }
 ```
-
-Supported `mediaType` values: `Image`, `Video`, `Audio`
 
 ---
 
@@ -312,4 +309,4 @@ Expected response: `200 OK`
 | Type | Required Fields |
 |---|---|
 | `text` | `text` (string) |
-| `media` | `url` (string), `mediaType` (`Image` / `Video` / `Audio`) |
+| `media` | `url` (string) |
